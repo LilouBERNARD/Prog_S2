@@ -9,6 +9,8 @@ struct Noeud{
 
 struct Liste{
     Noeud* premier;
+    int n; 
+    Noeud* dernier; 
     // your code
 };
 
@@ -111,62 +113,152 @@ void stocke(Liste* liste, int n, int valeur)
 
 void ajoute(DynaTableau* tableau, int valeur)
 {
+    if(tableau->index < tableau->capacite)
+    {
+        tableau->donnees[tableau->index]=valeur;
+        tableau->index ++;
+    } 
+    else 
+    {
+        
+        tableau->capacite ++;
+        
+        int *ajoutdonnees = (int*)realloc(tableau->donnees, tableau->capacite*sizeof(int));
 
+        if(ajoutdonnees!=NULL)
+        {
+            tableau->donnees = ajoutdonnees;
+            tableau->donnees[tableau->index]=valeur;
+            tableau->index++;
+        } 
+        else 
+        {
+            cout << "erreur allocation memoire" << endl;
+        }
+    }
+
+    
 }
 
 
 void initialise(DynaTableau* tableau, int capacite)
 {
-
+    tableau->donnees=(int*)malloc(capacite *sizeof(int));
+    tableau->capacite=capacite;
+    tableau->index=0;
 }
 
 bool est_vide(const DynaTableau* liste)
 {
-    return false;
+    if(liste->index==0)
+    {
+        return true;
+    } 
+    else 
+    {
+        return false;
+    }    
 }
 
 void affiche(const DynaTableau* tableau)
 {
+    for(int i=0; i<tableau->index; i++)
+    {
+        cout << "Valeur :" << tableau->donnees[i] << endl;
+    }
+
+
 
 }
 
 int recupere(const DynaTableau* tableau, int n)
 {
+    if(n>=0 && n<=tableau->index)
+    {
+        return tableau->donnees[n];
+    } 
+    else 
+    {
+        cout << "pas de valeur pour n" << endl;
+    }
     return 0;
 }
 
 int cherche(const DynaTableau* tableau, int valeur)
 {
+    for(int i=0; i<tableau->index; i++)
+    {
+        if(tableau->donnees[i]==valeur)
+        {
+            return i;
+        }
+    }
     return -1;
 }
 
 void stocke(DynaTableau* tableau, int n, int valeur)
 {
+    if(n>=0 && n<=tableau->index)
+    {
+        tableau->donnees[n]=valeur;
+    } 
+    else 
+    {
+        cout << "pas de valeur pour n" << endl;
+    }
+
 
 }
 
 //void pousse_file(DynaTableau* liste, int valeur)
 void pousse_file(Liste* liste, int valeur)
 {
-
+    ajoute(liste, valeur);
 }
 
 //int retire_file(Liste* liste)
 int retire_file(Liste* liste)
 {
-    return 0;
+    Noeud* actuel = liste->premier;
+    int valeur = actuel->donnee;
+
+    liste->premier=liste->premier->suivant;
+    liste->n=liste->n-1;
+    free(actuel);
+    return valeur ;
 }
 
 //void pousse_pile(DynaTableau* liste, int valeur)
 void pousse_pile(Liste* liste, int valeur)
 {
-
+    ajoute(liste, valeur);
 }
 
 //int retire_pile(DynaTableau* liste)
 int retire_pile(Liste* liste)
 {
-    return 0;
+    Noeud* actuel = liste->premier;
+    Noeud *avantActuel = nullptr;
+    
+    while(actuel->suivant!=nullptr)
+    {
+        avantActuel=actuel;
+        actuel=actuel->suivant;
+    }
+    
+    int retour = actuel->donnee;
+    
+    if (liste->premier!=liste->dernier)
+    {
+    	avantActuel->suivant=nullptr;
+	}
+
+    liste->dernier=avantActuel;
+    liste->n-=1;
+
+    free(actuel);
+
+    return retour;
 }
 
 
