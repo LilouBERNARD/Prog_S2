@@ -10,18 +10,21 @@ using namespace std;
 int search(int value, Array& toSort, int taille)
 {
     Context _("search", value, taille); // do not care about this, it allow the display of call stack
-    if (taille<0)
+    
+    if(size>0)
     {
-        cout << "Valeur non trouvée";
-        return -1;
-    }
-    if (toSort[taille]==value)
+        if(value==toSort[size-1])
+        {
+            return_and_display(size-1);
+        } 
+        else 
+        {
+            return_and_display(search(value, toSort, size-1));
+        }
+    } 
+    else 
     {
-        return taille;
-    }
-    else
-    {
-        search(value, toSort, taille-1);
+        return_and_display(-1);
     }
     return_and_display(-1);
 
@@ -29,6 +32,7 @@ int search(int value, Array& toSort, int taille)
     // check the last cell and if it does not correspond
     // then consider a smaller array when recalling search
 }
+
 
 int main(int argc, char *argv[])
 {
@@ -42,6 +46,4 @@ int main(int argc, char *argv[])
 
 
 
-   
-
-
+  
